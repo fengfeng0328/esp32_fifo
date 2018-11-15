@@ -16,6 +16,12 @@
 #include "spiram.h"
 
 
+void fifo_task(void *pvParameters)
+{
+
+	vTaskDelete(NULL);
+}
+
 void app_main()
 {
     printf("esp32 fifo test!\n");
@@ -34,5 +40,7 @@ void app_main()
             (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
 
     fflush(stdout);
+
+	xTaskCreate(&fifo_task, "fifo_task", 256 * 10, NULL, 4, NULL);
 
 }
