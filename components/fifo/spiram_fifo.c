@@ -35,12 +35,15 @@ static long fifoOvfCnt, fifoUdrCnt;
 //Low watermark where we restart the reader thread.
 #define FIFO_LOWMARK (112*1024)
 
+#define FAKE_SPI_BUFF
+
 #ifdef FAKE_SPI_BUFF
 //Re-define a bunch of things so we use the internal buffer
 #undef SPIRAMSIZE
 //allocate enough for about one mp3 frame
 //#define SPIRAMSIZE 1850
-#define SPIRAMSIZE 32000
+//#define SPIRAMSIZE 32000
+#define SPIRAMSIZE 2048
 static char fakespiram[SPIRAMSIZE];
 #define spiRamInit() while(0)
 #define spiRamTest() 1

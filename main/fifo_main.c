@@ -16,9 +16,39 @@
 #include "spiram.h"
 
 
+void fifo_read(void *pvParameters)
+{
+	for (;;) {
+		char buff[256] = { 0 };
+		spiRamFifoRead(buff, sizeof(buff));
+		printf("------\t");
+		printf("spiRamFifoRead\t");
+		printf("------\n");
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
+
+	vTaskDelete(NULL);
+}
+void fifo_write(void *pvParameters)
+{
+	for (;;) {
+		char buff[256] = { 0 };
+		spiRamFifoWrite(buff, sizeof(buff));
+		printf("++++++\t");
+		printf("spiRamFifoWrite\t");
+		printf("++++++\n");
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
+
+	vTaskDelete(NULL);
+}
+
 void fifo_task(void *pvParameters)
 {
+	spiRamFifoInit();
 
+	xTaskCreate(&fifo_write, "fifo_write", 256 * 10, NULL, 4, NULL);
+	xTaskCreate(&fifo_read, "fifo_read", 256 * 10, NULL, 4, NULL);
 	vTaskDelete(NULL);
 }
 
